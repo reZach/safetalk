@@ -15,7 +15,32 @@
             <input type="button" id="enter" class="center-content" value="Enter" data-bind="click: enterChatRoom" />
         </div>
     </div>
+    
+
     <div data-bind="visible: !showWarning()" class="flex flex-column" style="display:none;">
+        <div class="row flex flex-column mheight-90">
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                <h2>Chat rooms</h2>
+            </div>
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                Your public chat name is <span class="display-name" data-bind="text: displayName"></span>
+            </div>
+        </div>
+        
+        <div class="row flex flex-column section-middle">
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                <input type="text" placeholder="type to filter" />
+            </div>
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!--<div data-bind="visible: !showWarning()" class="flex flex-column" style="display:none;">
         <div class="row flex flex-column header-section">
             <div class="col-xs-12 col-sm-offset-2 col-sm-10">
                 <h2>@(WebConfigurationManager.AppSettings["ApplicationName"])</h2>
@@ -32,7 +57,7 @@
             </div>
         </div>
         <div id="js-messages" class="row flex chat-space">
-            <div class="google-ad col-xs-12 col-sm-2"></div> <!-- google ad -->
+            <div class="google-ad col-xs-12 col-sm-2"></div> @* google ad *@
             <div class="flex flex-column col-xs-12 col-sm-10">
                 <ul data-bind="visible: canSwitchRoom, foreach: messageLog">
                     <li data-bind="visible: $data.room == $root.selectedRoom(), css: {'message-server': $data.css == 'server', 'message-warning': $data.css == 'warning', 'message-cleared': $data.css == 'cleared'}, html: '(' + $data.timestamp + ') ' + '<b>' + $data.cookie + '</b>: ' + $data.message"></li>
@@ -59,7 +84,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
 

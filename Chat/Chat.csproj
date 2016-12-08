@@ -224,10 +224,10 @@
     <Compile Include="ViewModels\GoogleResponsesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Bootstrap\bootstrap-theme.css" />
+    <Content Include="Content\Bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Content\Bootstrap\bootstrap.css" />
+    <Content Include="Content\Bootstrap\bootstrap.min.css" />
     <Content Include="Content\Sounds\beer_can_opening.aac" />
     <Content Include="Content\Sounds\beer_can_opening.mp3" />
     <Content Include="Content\Sounds\bell_ring.aac" />
@@ -311,16 +311,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\Bootstrap\bootstrap.min.css.map" />
+    <Content Include="Content\Bootstrap\bootstrap.css.map" />
+    <Content Include="Content\Bootstrap\bootstrap-theme.min.css.map" />
+    <Content Include="Content\Bootstrap\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\safetalk.pubxml" />
     <Content Include="Scripts\Lib\Bootstrap\bootstrap.js" />
     <Content Include="Scripts\Lib\Bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\Lib\Ion.Sound\ion.sound.min.js" />
     <Content Include="Scripts\chatpage.js" />
     <Content Include="Scripts\chatViewModel.js" />
+    <Content Include="Scripts\Lib\List\list.min.js" />
     <Content Include="Scripts\Lib\MDN\cookie.js" />
     <Content Include="Scripts\Lib\Facebook\facebooksdk.js" />
     <None Include="Scripts\Lib\Jquery\jquery-3.1.1.intellisense.js" />

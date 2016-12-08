@@ -16,6 +16,7 @@ namespace Chat
                         "~/Scripts/Lib/Modernizr/modernizr-*",
                         "~/Scripts/Lib/Facebook/facebooksdk.js",
                         "~/Scripts/Lib/Bootstrap/bootstrap.js",
+                        "~/Scripts/Lib/List/list.min.js",
                         "~/Scripts/Lib/MDN/cookie.js",
                         "~/Scripts/Lib/Ion.Sound/ion.sound.min.js"));
 
@@ -34,7 +35,7 @@ namespace Chat
                 ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/Bootstrap/bootstrap.css",
                       "~/Content/Site.css"));
             
         }
