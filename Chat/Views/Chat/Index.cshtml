@@ -1,0 +1,71 @@
+﻿@using System.Web.Configuration
+@{
+    ViewBag.Title = "Chat";
+}
+
+<div id="js-knockoutbindingtarget" class="flex">
+
+    <div class="center-contentparent alert-modal" data-bind="visible: showWarning, css: {flex: !showWarning()}" style="display:none;">
+        <div class="row alert alert-danger">
+            By entering this chat room, you agree that you are not younger
+            than 18 years of age, may be exposed to mature content and have
+            read and agreed to the @Html.ActionLink("terms of use", "Disclaimer", "Home")
+        </div>
+        <div class="row center-contentparent">
+            <input type="button" id="enter" class="center-content" value="Enter" data-bind="click: enterChatRoom" />
+        </div>
+    </div>
+    <div data-bind="visible: !showWarning()" class="flex flex-column" style="display:none;">
+        <div class="row flex flex-column header-section">
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                <h2>@(WebConfigurationManager.AppSettings["ApplicationName"])</h2>
+                <div id="js-header"></div>
+            </div>
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                Your public chat name is <span class="display-name" data-bind="text: displayName"></span>
+            </div>
+        </div>
+        <div class="row flex chat-room-section">
+            <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                Chat room: 
+                <select data-bind="options: chatRooms, optionsText: 'name', optionsValue: 'value', value: selectedRoom, attr: {disabled: !canSwitchRoom()}"></select>
+            </div>
+        </div>
+        <div id="js-messages" class="row flex chat-space">
+            <div class="google-ad col-xs-12 col-sm-2"></div> <!-- google ad -->
+            <div class="flex flex-column col-xs-12 col-sm-10">
+                <ul data-bind="visible: canSwitchRoom, foreach: messageLog">
+                    <li data-bind="visible: $data.room == $root.selectedRoom(), css: {'message-server': $data.css == 'server', 'message-warning': $data.css == 'warning', 'message-cleared': $data.css == 'cleared'}, html: '(' + $data.timestamp + ') ' + '<b>' + $data.cookie + '</b>: ' + $data.message"></li>
+                </ul>
+                <div data-bind="visible: !canSwitchRoom()">
+                    <div class="alert alert-info">
+                        Switching chat rooms...
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="row flex input-section">
+            <div class="col-xs-12 flex flex-end flex-column">
+                <div class="flex flex-column justify-center input-buttons">
+                    <div class="flex justify-center">
+                        <form class="flex flex-column" data-bind="submit: sendMessage">
+                            <div class="flex justify-center">
+                                <input type="text" placeholder="Message (enter to send)..." class="full-width" data-bind="value: message, hasFocus: setFocus" />
+                                <input type="button" value="Clear" data-bind="click: clearMessages" />
+                            </div>                            
+                            <textarea placeholder="Type the names of users, separated by commas, to hide their future messages. Ex -> Jerry:1234,Bob:4567" class="flex col-xs-12" data-bind="value: bannedUsers, event: {blur: updateBannedUsers}"></textarea>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {    
+    <script type="text/javascript" src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
+    <script type="text/javascript" src="~/signalr/hubs"></script>
+    <script type="text/javascript" src="~/Scripts/chatViewModel.js"></script>
+}

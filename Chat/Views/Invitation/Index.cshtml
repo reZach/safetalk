@@ -1,0 +1,99 @@
+﻿@using System.Web.Configuration
+@model Chat.ViewModels.GoogleResponsesViewModel
+@{
+    ViewBag.Title = "Invitation";
+}
+
+@if (!ViewBag.refresh)
+{
+    <div class="container body-content">
+        <h2>Chat invitations</h2>
+        <div id="text-container" class="container">
+            <p>
+                Due to the nature of a 24/7 online chat room, there may be times when
+                you log on and no one is in your chat room. To help remedy this, you may
+                use a chat invitation to log when and what you'd like to talk about here
+                on SafeTalk. These chat invitations will be in your current timezone based
+                on your device, or otherwise noted. <b>Chat invitations
+                that have since expired will not show up in the table below!</b>
+            </p>
+
+            @if (Model.Responses.Count > 0 && Model.Responses.Exists(r => r.Status != Chat.ViewModels.GoogleResponse.STATUS.INACTIVE))
+            {
+                <p class="alert alert-info">
+                    To submit a chat invitation, <a href="https://goo.gl/forms/U2msdZMYQ8IbyZCL2" target="_blank" class="alert-link">fill out the following form</a>
+                    and after a minute your response will show up in the table below.
+                </p>
+            }            
+
+            <div class="chat-invitations">
+                @if (Model.Responses.Count > 0 && Model.Responses.Exists(r => r.Status != Chat.ViewModels.GoogleResponse.STATUS.INACTIVE))
+                {
+                    <table class="table">
+                        <tr>
+                            <th>Topic</th>
+                            <th>Date/time</th>
+                            <th>Status</th>
+                        </tr>
+
+                        @foreach (var item in Model.Responses)
+                        {
+                            if (item.Status != Chat.ViewModels.GoogleResponse.STATUS.INACTIVE)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Topic)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TimeRequested)
+                                    </td>
+                                    @if (item.Status == Chat.ViewModels.GoogleResponse.STATUS.ACTIVENOW)
+                                    {
+                                        <td class="alert alert-success">
+                                            @item.StatusStrings[Convert.ToInt32(item.Status)]
+                                        </td>
+                                    }
+                                    else if (item.Status == Chat.ViewModels.GoogleResponse.STATUS.FIFTEEN ||
+                                      item.Status == Chat.ViewModels.GoogleResponse.STATUS.THIRTY ||
+                                      item.Status == Chat.ViewModels.GoogleResponse.STATUS.HOUR)
+                                    {
+                                        <td class="alert alert-warning">
+                                            @item.StatusStrings[Convert.ToInt32(item.Status)]
+                                        </td>
+                                    }
+                                    else if (item.Status == Chat.ViewModels.GoogleResponse.STATUS.TENPAST)
+                                    {
+                                        <td class="alert alert-danger">
+                                            @item.StatusStrings[Convert.ToInt32(item.Status)]
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.StatusStrings[Convert.ToInt32(item.Status)]
+                                        </td>
+                                    }
+
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-warning">No chat invitations were found, go <a href="https://goo.gl/forms/U2msdZMYQ8IbyZCL2" target="_blank" class="alert-link">here</a> to submit one</div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Need to refresh page to get the user date/time cookie set;
+        This script is only run if we hit /invitation on a cookie-less browser -->
+    <script type="text/javascript">
+        setTimeout(function () {
+            window.location.href = window.location.origin + "/invitation";
+        }, 2000);
+    </script>
+}

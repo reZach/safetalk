@@ -1,0 +1,28 @@
+﻿@using System.Web.Configuration
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - @(WebConfigurationManager.AppSettings["ApplicationName"])</title>
+    @Styles.Render("~/Content/css")    
+    <script src="@(WebConfigurationManager.AppSettings["OpenTagContainerSrc"])" type="text/javascript" async defer></script>
+</head>
+<body>
+    @Html.Partial("Navbar")
+    
+    <div id="fb-root"></div>
+    <div class="content flex">
+        @RenderBody()
+    </div>
+    <footer class="footer center-contentparent">
+        @RenderSection("footer", required: false)
+        <p>&copy; @DateTime.Now.Year - @(WebConfigurationManager.AppSettings["ApplicationName"])</p>
+        <div class="fb-share-button center-content" data-href="https://www.facebook.com/safeplacetotalk/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2Fsafeplacetotalk%2F&amp;src=sdkpreparse">Share</a></div>
+    </footer>
+    
+    @Scripts.Render("~/bundles/javascript")
+    @RenderSection("scripts", required: false)    
+</body>
+</html>
