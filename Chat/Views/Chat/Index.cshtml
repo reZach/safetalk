@@ -3,6 +3,64 @@
     ViewBag.Title = "Chat";
 }
 
+
+
+<div ng-app="chat">
+    <section ui-view></section>
+
+
+    <div ng-controller="RoomBrowserController">
+        <div class="col-sm-2">google ad</div>
+        <div class="col-sm-10 flex flex-column">
+            <div class="row flex browser-header">
+                <h2>Chat room browser</h2>                    
+            </div>
+            <div class="row flex">
+                <span>Your public chat name is: [name]</span>
+                <button>Change</button>
+            </div>
+            <div class="row flex">
+                <input placeholder="Filter chat rooms"/>
+                <button>Sort by name</button>
+                <button>Sort by users</button>
+            </div>
+            <div class="row flex">
+                Want to create a chat room? <a>Click here</a>
+            </div>
+            <div class="row flex">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Users</td>
+                            <td>Name</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-controller="ChatRoomController"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
 <div id="js-knockoutbindingtarget" class="flex">
 
     <div class="center-contentparent alert-modal" data-bind="visible: showWarning, css: {flex: !showWarning()}" style="display:none;">
@@ -60,7 +118,7 @@
             </div>
         </div>
         <div id="js-messages" class="row flex chat-space">
-            <div class="google-ad col-xs-12 col-sm-2"></div> @* google ad *@
+            <div class="google-ad col-xs-12 col-sm-2"></div> @* google ad *@@*
             <div class="flex flex-column col-xs-12 col-sm-10">
                 <ul data-bind="visible: canSwitchRoom, foreach: messageLog">
                     <li data-bind="visible: $data.room == $root.selectedRoom(), css: {'message-server': $data.css == 'server', 'message-warning': $data.css == 'warning', 'message-cleared': $data.css == 'cleared'}, html: '(' + $data.timestamp + ') ' + '<b>' + $data.cookie + '</b>: ' + $data.message"></li>
@@ -90,10 +148,13 @@
     </div>-->
 </div>
 
-
+*@
 
 @section scripts {    
-    <script type="text/javascript" src="~/Scripts/Lib/Jquery/jquery.signalR-2.2.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/lib/jquery/jquery.signalR-2.2.1.min.js"></script>
     <script type="text/javascript" src="~/signalr/hubs"></script>
-    <script type="text/javascript" src="~/Scripts/chatViewModel.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/chatViewModel.js"></script>*@
+    <script type="text/javascript" src="~/Scripts/lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/lib/angular/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/app/chat.js"></script>
 }

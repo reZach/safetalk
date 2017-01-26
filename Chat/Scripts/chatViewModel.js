@@ -381,8 +381,8 @@ ko.applyBindings(vm, $(".js-knockoutbindingtarget")[0]);
 
 
 // Check for ad block;
-var cssStyleDeclaration = window.getComputedStyle(document.getElementsByClassName("google-ad")[0], ":content");
+/*var cssStyleDeclaration = window.getComputedStyle(document.getElementsByClassName("google-ad")[0], ":content");
 var adDisplay = cssStyleDeclaration.getPropertyValue("display");
 if (adDisplay == "none"){
     $(".google-ad").removeClass("google-ad").addClass("alert alert-warning").text("The ads we serve are meant to support the features we provide for free to you on the site. Please consider whitelisting our site and support us");
-}
+}*/

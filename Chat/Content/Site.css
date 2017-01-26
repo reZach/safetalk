@@ -14,9 +14,11 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 html {height:100%;}
 body {min-height:100%;display:flex;flex-direction:column;font-size:16px;}
 footer {margin-bottom:10px;}
+h1, .h1, h2, .h2, h3, .h3 {margin:0;}
 .content {flex-direction:column;justify-content:flex-start;margin:70px 40px 0px 40px;}
 .center-content {display:inline-block;}
 .center-contentparent {text-align:center;}
+.browser-header {min-height:42px;}
 .alert-modal {margin:0 auto;}
 .display-name {white-space:pre;font-weight:bold;}
 .header-section {max-height:80px;}
