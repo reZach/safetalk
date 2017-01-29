@@ -3847,7 +3847,10 @@
     <Content Include="node_modules\zone.js\LICENSE.wrapped" />
     <Content Include="node_modules\zone.js\package.json" />
     <Content Include="node_modules\zone.js\README.md" />
+    <Content Include="Scripts-Build\main.bundle.js" />
+    <Content Include="webpack.config.js" />
     <None Include="Properties\PublishProfiles\safetalk.pubxml" />
+    <Content Include="Scripts-Build\main.bundle.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -3905,6 +3908,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\app\" />
+    <Folder Include="Scripts\shared\assets\" />
+    <Folder Include="Scripts\shared\directives\" />
+    <Folder Include="Scripts\shared\interfaces\" />
+    <Folder Include="Scripts\shared\pipes\" />
+    <Folder Include="Scripts\shared\services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -5069,6 +5078,9 @@
     <TypeScriptCompile Include="node_modules\zone.js\lib\zone-spec\task-tracking.ts" />
     <TypeScriptCompile Include="node_modules\zone.js\lib\zone-spec\wtf.ts" />
     <TypeScriptCompile Include="node_modules\zone.js\lib\zone.ts" />
+    <TypeScriptCompile Include="Scripts\app.component.ts" />
+    <TypeScriptCompile Include="Scripts\main.ts" />
+    <TypeScriptCompile Include="Scripts\shared\shared.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
