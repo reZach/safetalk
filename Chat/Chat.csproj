@@ -317,10 +317,6 @@
     <Content Include="Content\Bootstrap\bootstrap-theme.css.map" />
     <Content Include="package.json" />
     <None Include="Properties\PublishProfiles\safetalk.pubxml" />
-    <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\chat.js" />
-    <Content Include="Scripts\app\modules\browse\browse.js" />
-    <Content Include="Scripts\app\modules\warning\module.js" />
     <Content Include="Scripts\lib\angular\angular-ui-router.min.js" />
     <Content Include="Scripts\lib\angular\angular.min.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
@@ -378,10 +374,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\app\modules\browse\js\" />
-    <Folder Include="Scripts\app\modules\browse\views\" />
-    <Folder Include="Scripts\app\modules\chat\" />
-    <Folder Include="Scripts\app\modules\warning\views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
