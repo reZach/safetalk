@@ -8,7 +8,6 @@ var FromObservable_1 = require('../observable/FromObservable');
 var isArray_1 = require('../util/isArray');
 var OuterSubscriber_1 = require('../OuterSubscriber');
 var subscribeToResult_1 = require('../util/subscribeToResult');
-/* tslint:disable:max-line-length */
 function onErrorResumeNext() {
     var nextSources = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -39,7 +38,7 @@ var OnErrorResumeNextOperator = (function () {
         this.nextSources = nextSources;
     }
     OnErrorResumeNextOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
+        return source._subscribe(new OnErrorResumeNextSubscriber(subscriber, this.nextSources));
     };
     return OnErrorResumeNextOperator;
 }());

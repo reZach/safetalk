@@ -13,6 +13,4 @@ export interface DomAnimatePlayer {
     onfinish: Function;
     position: number;
     currentTime: number;
-    addEventListener(eventName: string, handler: (event: any) => any): any;
-    dispatchEvent(eventName: string): any;
 }

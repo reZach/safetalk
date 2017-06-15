@@ -25,11 +25,6 @@ var ArgumentOutOfRangeError_1 = require('../util/ArgumentOutOfRangeError');
  * var result = clicks.elementAt(2);
  * result.subscribe(x => console.log(x));
  *
- * // Results in:
- * // click 1 = nothing
- * // click 2 = nothing
- * // click 3 = MouseEvent object logged to console
- *
  * @see {@link first}
  * @see {@link last}
  * @see {@link skip}
@@ -61,7 +56,7 @@ var ElementAtOperator = (function () {
         }
     }
     ElementAtOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
+        return source._subscribe(new ElementAtSubscriber(subscriber, this.index, this.defaultValue));
     };
     return ElementAtOperator;
 }());

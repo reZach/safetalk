@@ -16,8 +16,7 @@ export declare class LoadedRouterConfig {
     routes: Route[];
     injector: Injector;
     factoryResolver: ComponentFactoryResolver;
-    injectorFactory: Function;
-    constructor(routes: Route[], injector: Injector, factoryResolver: ComponentFactoryResolver, injectorFactory: Function);
+    constructor(routes: Route[], injector: Injector, factoryResolver: ComponentFactoryResolver);
 }
 export declare class RouterConfigLoader {
     private loader;

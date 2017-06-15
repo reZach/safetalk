@@ -11,29 +11,17 @@ import { Injectable } from '@angular/core';
  *
  * Take care not to evaluate this in non-browser contexts.
  *
- * \@experimental
+ * @experimental
  */
 export var BrowserXhr = (function () {
     function BrowserXhr() {
     }
-    /**
-     * @return {?}
-     */
-    BrowserXhr.prototype.build = function () { return ((new XMLHttpRequest())); };
+    BrowserXhr.prototype.build = function () { return (new XMLHttpRequest()); };
     BrowserXhr.decorators = [
         { type: Injectable },
     ];
     /** @nocollapse */
-    BrowserXhr.ctorParameters = function () { return []; };
+    BrowserXhr.ctorParameters = [];
     return BrowserXhr;
 }());
-function BrowserXhr_tsickle_Closure_declarations() {
-    /** @type {?} */
-    BrowserXhr.decorators;
-    /**
-     * @nocollapse
-     * @type {?}
-     */
-    BrowserXhr.ctorParameters;
-}
 //# sourceMappingURL=browser_xhr.js.map

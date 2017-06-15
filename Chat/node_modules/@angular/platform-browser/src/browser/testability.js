@@ -7,22 +7,16 @@
  */
 import { setTestabilityGetter } from '@angular/core';
 import { getDOM } from '../dom/dom_adapter';
+import { ListWrapper } from '../facade/collection';
 import { global, isPresent } from '../facade/lang';
 export var BrowserGetTestability = (function () {
     function BrowserGetTestability() {
     }
-    /**
-     * @return {?}
-     */
     BrowserGetTestability.init = function () { setTestabilityGetter(new BrowserGetTestability()); };
-    /**
-     * @param {?} registry
-     * @return {?}
-     */
     BrowserGetTestability.prototype.addToWindow = function (registry) {
         global.getAngularTestability = function (elem, findInAncestors) {
             if (findInAncestors === void 0) { findInAncestors = true; }
-            var /** @type {?} */ testability = registry.findTestabilityInTree(elem, findInAncestors);
+            var testability = registry.findTestabilityInTree(elem, findInAncestors);
             if (testability == null) {
                 throw new Error('Could not find testability for element.');
             }
@@ -30,11 +24,11 @@ export var BrowserGetTestability = (function () {
         };
         global.getAllAngularTestabilities = function () { return registry.getAllTestabilities(); };
         global.getAllAngularRootElements = function () { return registry.getAllRootElements(); };
-        var /** @type {?} */ whenAllStable = function (callback /** TODO #9100 */) {
-            var /** @type {?} */ testabilities = global.getAllAngularTestabilities();
-            var /** @type {?} */ count = testabilities.length;
-            var /** @type {?} */ didWork = false;
-            var /** @type {?} */ decrement = function (didWork_ /** TODO #9100 */) {
+        var whenAllStable = function (callback /** TODO #9100 */) {
+            var testabilities = global.getAllAngularTestabilities();
+            var count = testabilities.length;
+            var didWork = false;
+            var decrement = function (didWork_ /** TODO #9100 */) {
                 didWork = didWork || didWork_;
                 count--;
                 if (count == 0) {
@@ -46,21 +40,15 @@ export var BrowserGetTestability = (function () {
             });
         };
         if (!global['frameworkStabilizers']) {
-            global['frameworkStabilizers'] = [];
+            global['frameworkStabilizers'] = ListWrapper.createGrowableSize(0);
         }
         global['frameworkStabilizers'].push(whenAllStable);
     };
-    /**
-     * @param {?} registry
-     * @param {?} elem
-     * @param {?} findInAncestors
-     * @return {?}
-     */
     BrowserGetTestability.prototype.findTestabilityInTree = function (registry, elem, findInAncestors) {
         if (elem == null) {
             return null;
         }
-        var /** @type {?} */ t = registry.getTestability(elem);
+        var t = registry.getTestability(elem);
         if (isPresent(t)) {
             return t;
         }

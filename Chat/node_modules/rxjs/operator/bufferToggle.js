@@ -55,7 +55,7 @@ var BufferToggleOperator = (function () {
         this.closingSelector = closingSelector;
     }
     BufferToggleOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
+        return source._subscribe(new BufferToggleSubscriber(subscriber, this.openings, this.closingSelector));
     };
     return BufferToggleOperator;
 }());

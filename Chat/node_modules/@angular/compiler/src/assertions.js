@@ -6,44 +6,34 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { isDevMode } from '@angular/core';
-import { isBlank, isPresent } from '../src/facade/lang';
-/**
- * @param {?} identifier
- * @param {?} value
- * @return {?}
- */
+import { isArray, isBlank, isPresent, isString } from '../src/facade/lang';
 export function assertArrayOfStrings(identifier, value) {
     if (!isDevMode() || isBlank(value)) {
         return;
     }
-    if (!Array.isArray(value)) {
+    if (!isArray(value)) {
         throw new Error("Expected '" + identifier + "' to be an array of strings.");
     }
-    for (var /** @type {?} */ i = 0; i < value.length; i += 1) {
-        if (typeof value[i] !== 'string') {
+    for (var i = 0; i < value.length; i += 1) {
+        if (!isString(value[i])) {
             throw new Error("Expected '" + identifier + "' to be an array of strings.");
         }
     }
 }
-var /** @type {?} */ INTERPOLATION_BLACKLIST_REGEXPS = [
+var INTERPOLATION_BLACKLIST_REGEXPS = [
     /^\s*$/,
     /[<>]/,
     /^[{}]$/,
     /&(#|[a-z])/i,
     /^\/\//,
 ];
-/**
- * @param {?} identifier
- * @param {?} value
- * @return {?}
- */
 export function assertInterpolationSymbols(identifier, value) {
-    if (isPresent(value) && !(Array.isArray(value) && value.length == 2)) {
+    if (isPresent(value) && !(isArray(value) && value.length == 2)) {
         throw new Error("Expected '" + identifier + "' to be an array, [start, end].");
     }
     else if (isDevMode() && !isBlank(value)) {
-        var /** @type {?} */ start_1 = (value[0]);
-        var /** @type {?} */ end_1 = (value[1]);
+        var start_1 = value[0];
+        var end_1 = value[1];
         // black list checking
         INTERPOLATION_BLACKLIST_REGEXPS.forEach(function (regexp) {
             if (regexp.test(start_1) || regexp.test(end_1)) {

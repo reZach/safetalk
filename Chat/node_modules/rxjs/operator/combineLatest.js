@@ -9,7 +9,6 @@ var isArray_1 = require('../util/isArray');
 var OuterSubscriber_1 = require('../OuterSubscriber');
 var subscribeToResult_1 = require('../util/subscribeToResult');
 var none = {};
-/* tslint:disable:max-line-length */
 /**
  * Combines multiple Observables to create an Observable whose values are
  * calculated from the latest values of each of its input Observables.
@@ -33,11 +32,6 @@ var none = {};
  * var height = Rx.Observable.of(1.76, 1.77, 1.78);
  * var bmi = weight.combineLatest(height, (w, h) => w / (h * h));
  * bmi.subscribe(x => console.log('BMI is ' + x));
- *
- * // With output to console:
- * // BMI is 24.212293388429753
- * // BMI is 23.93948099205209
- * // BMI is 23.671253629592222
  *
  * @see {@link combineAll}
  * @see {@link merge}
@@ -68,15 +62,16 @@ function combineLatest() {
         observables = observables[0];
     }
     observables.unshift(this);
-    return this.lift.call(new ArrayObservable_1.ArrayObservable(observables), new CombineLatestOperator(project));
+    return new ArrayObservable_1.ArrayObservable(observables).lift(new CombineLatestOperator(project));
 }
 exports.combineLatest = combineLatest;
+/* tslint:enable:max-line-length */
 var CombineLatestOperator = (function () {
     function CombineLatestOperator(project) {
         this.project = project;
     }
     CombineLatestOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new CombineLatestSubscriber(subscriber, this.project));
+        return source._subscribe(new CombineLatestSubscriber(subscriber, this.project));
     };
     return CombineLatestOperator;
 }());

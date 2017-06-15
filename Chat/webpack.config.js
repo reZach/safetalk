@@ -2,10 +2,10 @@
 
 module.exports = {
     context: path.join(__dirname, "Scripts"),
-    entry: "./Scripts/main.ts",
+    entry: "./main.ts",
     output: {
         path: path.join(__dirname, "Scripts-Build"),
-        filename: "./Scripts-Build/[name].bundle.js"
+        filename: "./[name].bundle.js"
     },
     resolve: {
         // Add ".ts" as a resolvable extension

@@ -8,9 +8,9 @@
 import { getDOM } from '../../dom/dom_adapter';
 import { isPresent } from '../../facade/lang';
 /**
- * Predicates for use with {\@link DebugElement}'s query functions.
+ * Predicates for use with {@link DebugElement}'s query functions.
  *
- * \@experimental All debugging apis are currently experimental.
+ * @experimental All debugging apis are currently experimental.
  */
 export var By = (function () {
     function By() {
@@ -20,8 +20,7 @@ export var By = (function () {
      *
      * ## Example
      *
-     * {\@example platform-browser/dom/debug/ts/by/by.ts region='by_all'}
-     * @return {?}
+     * {@example platform-browser/dom/debug/ts/by/by.ts region='by_all'}
      */
     By.all = function () { return function (debugElement) { return true; }; };
     /**
@@ -29,9 +28,7 @@ export var By = (function () {
      *
      * ## Example
      *
-     * {\@example platform-browser/dom/debug/ts/by/by.ts region='by_css'}
-     * @param {?} selector
-     * @return {?}
+     * {@example platform-browser/dom/debug/ts/by/by.ts region='by_css'}
      */
     By.css = function (selector) {
         return function (debugElement) {
@@ -45,9 +42,7 @@ export var By = (function () {
      *
      * ## Example
      *
-     * {\@example platform-browser/dom/debug/ts/by/by.ts region='by_directive'}
-     * @param {?} type
-     * @return {?}
+     * {@example platform-browser/dom/debug/ts/by/by.ts region='by_directive'}
      */
     By.directive = function (type) {
         return function (debugElement) { return debugElement.providerTokens.indexOf(type) !== -1; };

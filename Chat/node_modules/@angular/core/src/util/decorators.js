@@ -5,54 +5,44 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { global, stringify } from '../facade/lang';
-var /** @type {?} */ _nextClassId = 0;
-var /** @type {?} */ Reflect = global.Reflect;
-/**
- * @param {?} annotation
- * @return {?}
- */
+import { global, isFunction, stringify } from '../facade/lang';
+var _nextClassId = 0;
 function extractAnnotation(annotation) {
-    if (typeof annotation === 'function' && annotation.hasOwnProperty('annotation')) {
+    if (isFunction(annotation) && annotation.hasOwnProperty('annotation')) {
         // it is a decorator, extract annotation
         annotation = annotation.annotation;
     }
     return annotation;
 }
-/**
- * @param {?} fnOrArray
- * @param {?} key
- * @return {?}
- */
 function applyParams(fnOrArray, key) {
     if (fnOrArray === Object || fnOrArray === String || fnOrArray === Function ||
         fnOrArray === Number || fnOrArray === Array) {
         throw new Error("Can not use native " + stringify(fnOrArray) + " as constructor");
     }
-    if (typeof fnOrArray === 'function') {
+    if (isFunction(fnOrArray)) {
         return fnOrArray;
     }
-    if (Array.isArray(fnOrArray)) {
-        var /** @type {?} */ annotations = fnOrArray;
-        var /** @type {?} */ annoLength = annotations.length - 1;
-        var /** @type {?} */ fn = fnOrArray[annoLength];
-        if (typeof fn !== 'function') {
+    else if (fnOrArray instanceof Array) {
+        var annotations = fnOrArray;
+        var annoLength = annotations.length - 1;
+        var fn = fnOrArray[annoLength];
+        if (!isFunction(fn)) {
             throw new Error("Last position of Class method array must be Function in key " + key + " was '" + stringify(fn) + "'");
         }
         if (annoLength != fn.length) {
             throw new Error("Number of annotations (" + annoLength + ") does not match number of arguments (" + fn.length + ") in the function: " + stringify(fn));
         }
-        var /** @type {?} */ paramsAnnotations = [];
-        for (var /** @type {?} */ i = 0, /** @type {?} */ ii = annotations.length - 1; i < ii; i++) {
-            var /** @type {?} */ paramAnnotations = [];
+        var paramsAnnotations = [];
+        for (var i = 0, ii = annotations.length - 1; i < ii; i++) {
+            var paramAnnotations = [];
             paramsAnnotations.push(paramAnnotations);
-            var /** @type {?} */ annotation = annotations[i];
-            if (Array.isArray(annotation)) {
-                for (var /** @type {?} */ j = 0; j < annotation.length; j++) {
+            var annotation = annotations[i];
+            if (annotation instanceof Array) {
+                for (var j = 0; j < annotation.length; j++) {
                     paramAnnotations.push(extractAnnotation(annotation[j]));
                 }
             }
-            else if (typeof annotation === 'function') {
+            else if (isFunction(annotation)) {
                 paramAnnotations.push(extractAnnotation(annotation));
             }
             else {
@@ -62,7 +52,9 @@ function applyParams(fnOrArray, key) {
         Reflect.defineMetadata('parameters', paramsAnnotations, fn);
         return fn;
     }
-    throw new Error("Only Function or Array is supported in Class definition for key '" + key + "' is '" + stringify(fnOrArray) + "'");
+    else {
+        throw new Error("Only Function or Array is supported in Class definition for key '" + key + "' is '" + stringify(fnOrArray) + "'");
+    }
 }
 /**
  * Provides a way for expressing ES6 classes with parameter annotations in ES5.
@@ -111,7 +103,7 @@ function applyParams(fnOrArray, key) {
  *
  * ```
  * var MyService = ng.Class({
- *   constructor: [String, [new Optional(), Service], function(name, myService) {
+ *   constructor: [String, [new Query(), QueryList], function(name, queryList) {
  *     ...
  *   }]
  * });
@@ -121,7 +113,7 @@ function applyParams(fnOrArray, key) {
  *
  * ```
  * class MyService {
- *   constructor(name: string, \@Optional() myService: Service) {
+ *   constructor(name: string, @Query() queryList: QueryList) {
  *     ...
  *   }
  * }
@@ -144,118 +136,96 @@ function applyParams(fnOrArray, key) {
  *   }
  * });
  * ```
- * \@stable
- * @param {?} clsDef
- * @return {?}
+ * @stable
  */
 export function Class(clsDef) {
-    var /** @type {?} */ constructor = applyParams(clsDef.hasOwnProperty('constructor') ? clsDef.constructor : undefined, 'constructor');
-    var /** @type {?} */ proto = constructor.prototype;
+    var constructor = applyParams(clsDef.hasOwnProperty('constructor') ? clsDef.constructor : undefined, 'constructor');
+    var proto = constructor.prototype;
     if (clsDef.hasOwnProperty('extends')) {
-        if (typeof clsDef.extends === 'function') {
-            ((constructor)).prototype = proto =
-                Object.create(((clsDef.extends)).prototype);
+        if (isFunction(clsDef.extends)) {
+            constructor.prototype = proto =
+                Object.create(clsDef.extends.prototype);
         }
         else {
             throw new Error("Class definition 'extends' property must be a constructor function was: " + stringify(clsDef.extends));
         }
     }
     for (var key in clsDef) {
-        if (key !== 'extends' && key !== 'prototype' && clsDef.hasOwnProperty(key)) {
+        if (key != 'extends' && key != 'prototype' && clsDef.hasOwnProperty(key)) {
             proto[key] = applyParams(clsDef[key], key);
         }
     }
     if (this && this.annotations instanceof Array) {
         Reflect.defineMetadata('annotations', this.annotations, constructor);
     }
-    var /** @type {?} */ constructorName = constructor['name'];
+    var constructorName = constructor['name'];
     if (!constructorName || constructorName === 'constructor') {
-        ((constructor))['overriddenName'] = "class" + _nextClassId++;
+        constructor['overriddenName'] = "class" + _nextClassId++;
     }
-    return (constructor);
+    return constructor;
 }
-/**
- * @param {?} name
- * @param {?} props
- * @param {?=} parentClass
- * @param {?=} chainFn
- * @return {?}
- */
+var Reflect = global.Reflect;
 export function makeDecorator(name, props, parentClass, chainFn) {
     if (chainFn === void 0) { chainFn = null; }
-    var /** @type {?} */ metaCtor = makeMetadataCtor([props]);
-    /**
-     * @param {?} objOrType
-     * @return {?}
-     */
+    var metaCtor = makeMetadataCtor([props]);
     function DecoratorFactory(objOrType) {
-        if (!(Reflect && Reflect.getOwnMetadata)) {
+        if (!(Reflect && Reflect.getMetadata)) {
             throw 'reflect-metadata shim is required when using class decorators';
         }
         if (this instanceof DecoratorFactory) {
             metaCtor.call(this, objOrType);
             return this;
         }
-        var /** @type {?} */ annotationInstance = new ((DecoratorFactory))(objOrType);
-        var /** @type {?} */ chainAnnotation = typeof this === 'function' && Array.isArray(this.annotations) ? this.annotations : [];
-        chainAnnotation.push(annotationInstance);
-        var /** @type {?} */ TypeDecorator = (function TypeDecorator(cls) {
-            var /** @type {?} */ annotations = Reflect.getOwnMetadata('annotations', cls) || [];
-            annotations.push(annotationInstance);
-            Reflect.defineMetadata('annotations', annotations, cls);
-            return cls;
-        });
-        TypeDecorator.annotations = chainAnnotation;
-        TypeDecorator.Class = Class;
-        if (chainFn)
-            chainFn(TypeDecorator);
-        return TypeDecorator;
+        else {
+            var annotationInstance_1 = new DecoratorFactory(objOrType);
+            var chainAnnotation = isFunction(this) && this.annotations instanceof Array ? this.annotations : [];
+            chainAnnotation.push(annotationInstance_1);
+            var TypeDecorator = function TypeDecorator(cls) {
+                var annotations = Reflect.getOwnMetadata('annotations', cls) || [];
+                annotations.push(annotationInstance_1);
+                Reflect.defineMetadata('annotations', annotations, cls);
+                return cls;
+            };
+            TypeDecorator.annotations = chainAnnotation;
+            TypeDecorator.Class = Class;
+            if (chainFn)
+                chainFn(TypeDecorator);
+            return TypeDecorator;
+        }
     }
     if (parentClass) {
         DecoratorFactory.prototype = Object.create(parentClass.prototype);
     }
     DecoratorFactory.prototype.toString = function () { return ("@" + name); };
-    ((DecoratorFactory)).annotationCls = DecoratorFactory;
+    DecoratorFactory.annotationCls = DecoratorFactory;
     return DecoratorFactory;
 }
-/**
- * @param {?} props
- * @return {?}
- */
 function makeMetadataCtor(props) {
-    return function ctor() {
+    function ctor() {
         var _this = this;
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i - 0] = arguments[_i];
         }
         props.forEach(function (prop, i) {
-            var /** @type {?} */ argVal = args[i];
+            var argVal = args[i];
             if (Array.isArray(prop)) {
                 // plain parameter
-                _this[prop[0]] = argVal === undefined ? prop[1] : argVal;
+                var val = !argVal || argVal === undefined ? prop[1] : argVal;
+                _this[prop[0]] = val;
             }
             else {
                 for (var propName in prop) {
-                    _this[propName] =
-                        argVal && argVal.hasOwnProperty(propName) ? argVal[propName] : prop[propName];
+                    var val = !argVal || argVal[propName] === undefined ? prop[propName] : argVal[propName];
+                    _this[propName] = val;
                 }
             }
         });
-    };
+    }
+    return ctor;
 }
-/**
- * @param {?} name
- * @param {?} props
- * @param {?=} parentClass
- * @return {?}
- */
 export function makeParamDecorator(name, props, parentClass) {
-    var /** @type {?} */ metaCtor = makeMetadataCtor(props);
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
+    var metaCtor = makeMetadataCtor(props);
     function ParamDecoratorFactory() {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -265,24 +235,19 @@ export function makeParamDecorator(name, props, parentClass) {
             metaCtor.apply(this, args);
             return this;
         }
-        var /** @type {?} */ annotationInstance = new ((_a = ((ParamDecoratorFactory))).bind.apply(_a, [void 0].concat(args)))();
-        ((ParamDecorator)).annotation = annotationInstance;
+        var annotationInstance = new ((_a = ParamDecoratorFactory).bind.apply(_a, [void 0].concat(args)))();
+        ParamDecorator.annotation = annotationInstance;
         return ParamDecorator;
-        /**
-         * @param {?} cls
-         * @param {?} unusedKey
-         * @param {?} index
-         * @return {?}
-         */
         function ParamDecorator(cls, unusedKey, index) {
-            var /** @type {?} */ parameters = Reflect.getOwnMetadata('parameters', cls) || [];
+            var parameters = Reflect.getMetadata('parameters', cls) || [];
             // there might be gaps if some in between parameters do not have annotations.
             // we pad with nulls.
             while (parameters.length <= index) {
                 parameters.push(null);
             }
             parameters[index] = parameters[index] || [];
-            parameters[index].push(annotationInstance);
+            var annotationsForParam = parameters[index];
+            annotationsForParam.push(annotationInstance);
             Reflect.defineMetadata('parameters', parameters, cls);
             return cls;
         }
@@ -292,21 +257,11 @@ export function makeParamDecorator(name, props, parentClass) {
         ParamDecoratorFactory.prototype = Object.create(parentClass.prototype);
     }
     ParamDecoratorFactory.prototype.toString = function () { return ("@" + name); };
-    ((ParamDecoratorFactory)).annotationCls = ParamDecoratorFactory;
+    ParamDecoratorFactory.annotationCls = ParamDecoratorFactory;
     return ParamDecoratorFactory;
 }
-/**
- * @param {?} name
- * @param {?} props
- * @param {?=} parentClass
- * @return {?}
- */
 export function makePropDecorator(name, props, parentClass) {
-    var /** @type {?} */ metaCtor = makeMetadataCtor(props);
-    /**
-     * @param {...?} args
-     * @return {?}
-     */
+    var metaCtor = makeMetadataCtor(props);
     function PropDecoratorFactory() {
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
@@ -316,20 +271,22 @@ export function makePropDecorator(name, props, parentClass) {
             metaCtor.apply(this, args);
             return this;
         }
-        var /** @type {?} */ decoratorInstance = new ((_a = ((PropDecoratorFactory))).bind.apply(_a, [void 0].concat(args)))();
-        return function PropDecorator(target, name) {
-            var /** @type {?} */ meta = Reflect.getOwnMetadata('propMetadata', target.constructor) || {};
-            meta[name] = meta.hasOwnProperty(name) && meta[name] || [];
-            meta[name].unshift(decoratorInstance);
-            Reflect.defineMetadata('propMetadata', meta, target.constructor);
-        };
+        else {
+            var decoratorInstance = new ((_a = PropDecoratorFactory).bind.apply(_a, [void 0].concat(args)))();
+            return function PropDecorator(target, name) {
+                var meta = Reflect.getOwnMetadata('propMetadata', target.constructor) || {};
+                meta[name] = meta[name] || [];
+                meta[name].unshift(decoratorInstance);
+                Reflect.defineMetadata('propMetadata', meta, target.constructor);
+            };
+        }
         var _a;
     }
     if (parentClass) {
         PropDecoratorFactory.prototype = Object.create(parentClass.prototype);
     }
     PropDecoratorFactory.prototype.toString = function () { return ("@" + name); };
-    ((PropDecoratorFactory)).annotationCls = PropDecoratorFactory;
+    PropDecoratorFactory.annotationCls = PropDecoratorFactory;
     return PropDecoratorFactory;
 }
 //# sourceMappingURL=decorators.js.map

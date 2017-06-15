@@ -6,19 +6,21 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { NgZone } from '@angular/core';
-import { global } from './facade/lang';
+import { ListWrapper } from './facade/collection';
+import { StringWrapper, global, isPresent, isString } from './facade/lang';
 import { getDOM } from './private_import_platform-browser';
-export var browserDetection;
 export var BrowserDetection = (function () {
     function BrowserDetection(ua) {
         this._overrideUa = ua;
     }
     Object.defineProperty(BrowserDetection.prototype, "_ua", {
         get: function () {
-            if (typeof this._overrideUa === 'string') {
+            if (isPresent(this._overrideUa)) {
                 return this._overrideUa;
             }
-            return getDOM() ? getDOM().getUserAgent() : '';
+            else {
+                return isPresent(getDOM()) ? getDOM().getUserAgent() : '';
+            }
         },
         enumerable: true,
         configurable: true
@@ -108,24 +110,13 @@ export function el(html) {
     return getDOM().firstChild(getDOM().content(getDOM().createTemplate(html)));
 }
 export function normalizeCSS(css) {
-    return css.replace(/\s+/g, ' ')
-        .replace(/:\s/g, ':')
-        .replace(/'/g, '"')
-        .replace(/ }/g, '}')
-        .replace(/url\((\"|\s)(.+)(\"|\s)\)(\s*)/g, function () {
-        var match = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            match[_i - 0] = arguments[_i];
-        }
-        return ("url(\"" + match[2] + "\")");
-    })
-        .replace(/\[(.+)=([^"\]]+)\]/g, function () {
-        var match = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            match[_i - 0] = arguments[_i];
-        }
-        return ("[" + match[1] + "=\"" + match[2] + "\"]");
-    });
+    css = StringWrapper.replaceAll(css, /\s+/g, ' ');
+    css = StringWrapper.replaceAll(css, /:\s/g, ':');
+    css = StringWrapper.replaceAll(css, /'/g, '"');
+    css = StringWrapper.replaceAll(css, / }/g, '}');
+    css = StringWrapper.replaceAllMapped(css, /url\((\"|\s)(.+)(\"|\s)\)(\s*)/g, function (match /** TODO #9100 */) { return ("url(\"" + match[2] + "\")"); });
+    css = StringWrapper.replaceAllMapped(css, /\[(.+)=([^"\]]+)\]/g, function (match /** TODO #9100 */) { return ("[" + match[1] + "=\"" + match[2] + "\"]"); });
+    return css;
 }
 var _singleTagWhitelist = ['br', 'hr', 'input'];
 export function stringifyElement(el /** TODO #9100 */) {
@@ -136,11 +127,13 @@ export function stringifyElement(el /** TODO #9100 */) {
         result += "<" + tagName;
         // Attributes in an ordered way
         var attributeMap = getDOM().attributeMap(el);
-        var keys = Array.from(attributeMap.keys()).sort();
+        var keys = [];
+        attributeMap.forEach(function (v, k) { return keys.push(k); });
+        ListWrapper.sort(keys);
         for (var i = 0; i < keys.length; i++) {
             var key = keys[i];
             var attValue = attributeMap.get(key);
-            if (typeof attValue !== 'string') {
+            if (!isString(attValue)) {
                 result += " " + key;
             }
             else {
@@ -150,12 +143,12 @@ export function stringifyElement(el /** TODO #9100 */) {
         result += '>';
         // Children
         var childrenRoot = getDOM().templateAwareRoot(el);
-        var children = childrenRoot ? getDOM().childNodes(childrenRoot) : [];
+        var children = isPresent(childrenRoot) ? getDOM().childNodes(childrenRoot) : [];
         for (var j = 0; j < children.length; j++) {
             result += stringifyElement(children[j]);
         }
         // Closing tag
-        if (_singleTagWhitelist.indexOf(tagName) == -1) {
+        if (!ListWrapper.contains(_singleTagWhitelist, tagName)) {
             result += "</" + tagName + ">";
         }
     }
@@ -167,6 +160,7 @@ export function stringifyElement(el /** TODO #9100 */) {
     }
     return result;
 }
+export var browserDetection = new BrowserDetection(null);
 export function createNgZone() {
     return new NgZone({ enableLongStackTrace: true });
 }

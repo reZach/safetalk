@@ -6,7 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var OuterSubscriber_1 = require('../OuterSubscriber');
 var subscribeToResult_1 = require('../util/subscribeToResult');
-/* tslint:disable:max-line-length */
 /**
  * Projects each source value to the same Observable which is merged multiple
  * times in the output Observable.
@@ -69,7 +68,7 @@ var MergeMapToOperator = (function () {
         this.concurrent = concurrent;
     }
     MergeMapToOperator.prototype.call = function (observer, source) {
-        return source.subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
+        return source._subscribe(new MergeMapToSubscriber(observer, this.ish, this.resultSelector, this.concurrent));
     };
     return MergeMapToOperator;
 }());

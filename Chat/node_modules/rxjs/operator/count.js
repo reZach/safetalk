@@ -35,9 +35,6 @@ var Subscriber_1 = require('../Subscriber');
  * var result = numbers.count(i => i % 2 === 1);
  * result.subscribe(x => console.log(x));
  *
- * // Results in:
- * // 4
- *
  * @see {@link max}
  * @see {@link min}
  * @see {@link reduce}
@@ -63,7 +60,7 @@ var CountOperator = (function () {
         this.source = source;
     }
     CountOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
+        return source._subscribe(new CountSubscriber(subscriber, this.predicate, this.source));
     };
     return CountOperator;
 }());

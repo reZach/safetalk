@@ -67,7 +67,7 @@ var FirstOperator = (function () {
         this.source = source;
     }
     FirstOperator.prototype.call = function (observer, source) {
-        return source.subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
+        return source._subscribe(new FirstSubscriber(observer, this.predicate, this.resultSelector, this.defaultValue, this.source));
     };
     return FirstOperator;
 }());
@@ -86,7 +86,6 @@ var FirstSubscriber = (function (_super) {
         this.source = source;
         this.index = 0;
         this.hasCompleted = false;
-        this._emitted = false;
     }
     FirstSubscriber.prototype._next = function (value) {
         var index = this.index++;
@@ -130,12 +129,9 @@ var FirstSubscriber = (function (_super) {
     };
     FirstSubscriber.prototype._emitFinal = function (value) {
         var destination = this.destination;
-        if (!this._emitted) {
-            this._emitted = true;
-            destination.next(value);
-            destination.complete();
-            this.hasCompleted = true;
-        }
+        destination.next(value);
+        destination.complete();
+        this.hasCompleted = true;
     };
     FirstSubscriber.prototype._complete = function () {
         var destination = this.destination;

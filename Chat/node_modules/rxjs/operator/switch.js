@@ -56,7 +56,7 @@ var SwitchOperator = (function () {
     function SwitchOperator() {
     }
     SwitchOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new SwitchSubscriber(subscriber));
+        return source._subscribe(new SwitchSubscriber(subscriber));
     };
     return SwitchOperator;
 }());

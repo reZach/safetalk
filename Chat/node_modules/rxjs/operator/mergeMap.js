@@ -6,7 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var subscribeToResult_1 = require('../util/subscribeToResult');
 var OuterSubscriber_1 = require('../OuterSubscriber');
-/* tslint:disable:max-line-length */
 /**
  * Projects each source value to an Observable which is merged in the output
  * Observable.
@@ -27,15 +26,6 @@ var OuterSubscriber_1 = require('../OuterSubscriber');
  *   Rx.Observable.interval(1000).map(i => x+i)
  * );
  * result.subscribe(x => console.log(x));
- *
- * // Results in the following:
- * // a0
- * // b0
- * // c0
- * // a1
- * // b1
- * // c1
- * // continues to list a,b,c with respective ascending integers
  *
  * @see {@link concatMap}
  * @see {@link exhaustMap}
@@ -82,7 +72,7 @@ var MergeMapOperator = (function () {
         this.concurrent = concurrent;
     }
     MergeMapOperator.prototype.call = function (observer, source) {
-        return source.subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
+        return source._subscribe(new MergeMapSubscriber(observer, this.project, this.resultSelector, this.concurrent));
     };
     return MergeMapOperator;
 }());

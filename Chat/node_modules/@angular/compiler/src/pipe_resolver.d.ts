@@ -17,7 +17,6 @@ import { ReflectorReader } from './private_import_core';
 export declare class PipeResolver {
     private _reflector;
     constructor(_reflector?: ReflectorReader);
-    isPipe(type: Type<any>): boolean;
     /**
      * Return {@link Pipe} for a given `Type`.
      */

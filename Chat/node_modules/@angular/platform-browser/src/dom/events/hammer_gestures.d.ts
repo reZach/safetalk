@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { OpaqueToken } from '@angular/core';
-import { EventManagerPlugin } from './event_manager';
+import { HammerGesturesPluginCommon } from './hammer_common';
 /**
  * A DI token that you can use to provide{@link HammerGestureConfig} to Angular. Use it to configure
  * Hammer gestures.
@@ -28,7 +28,7 @@ export declare class HammerGestureConfig {
     };
     buildHammer(element: HTMLElement): HammerInstance;
 }
-export declare class HammerGesturesPlugin extends EventManagerPlugin {
+export declare class HammerGesturesPlugin extends HammerGesturesPluginCommon {
     private _config;
     constructor(_config: HammerGestureConfig);
     supports(eventName: string): boolean;

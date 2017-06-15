@@ -16,15 +16,14 @@ export declare const EVENT_MANAGER_PLUGINS: OpaqueToken;
 export declare class EventManager {
     private _zone;
     private _plugins;
-    private _eventNameToPlugin;
     constructor(plugins: EventManagerPlugin[], _zone: NgZone);
     addEventListener(element: HTMLElement, eventName: string, handler: Function): Function;
     addGlobalEventListener(target: string, eventName: string, handler: Function): Function;
     getZone(): NgZone;
 }
-export declare abstract class EventManagerPlugin {
+export declare class EventManagerPlugin {
     manager: EventManager;
-    abstract supports(eventName: string): boolean;
-    abstract addEventListener(element: HTMLElement, eventName: string, handler: Function): Function;
+    supports(eventName: string): boolean;
+    addEventListener(element: HTMLElement, eventName: string, handler: Function): Function;
     addGlobalEventListener(element: string, eventName: string, handler: Function): Function;
 }

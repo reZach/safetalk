@@ -14,54 +14,24 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ResponseOptions } from '../base_response_options';
 import { ReadyState, RequestMethod, ResponseType } from '../enums';
+import { StringWrapper, isPresent } from '../facade/lang';
 import { ConnectionBackend } from '../interfaces';
 import { Response } from '../static_response';
 import { BrowserJsonp } from './browser_jsonp';
-var /** @type {?} */ JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
-var /** @type {?} */ JSONP_ERR_WRONG_METHOD = 'JSONP requests must use GET request method.';
+var JSONP_ERR_NO_CALLBACK = 'JSONP injected script did not invoke callback.';
+var JSONP_ERR_WRONG_METHOD = 'JSONP requests must use GET request method.';
 /**
  * Abstract base class for an in-flight JSONP request.
  *
- * \@experimental
- * @abstract
+ * @experimental
  */
 export var JSONPConnection = (function () {
     function JSONPConnection() {
     }
-    /**
-     * Callback called when the JSONP request completes, to notify the application
-     * of the new data.
-     * @abstract
-     * @param {?=} data
-     * @return {?}
-     */
-    JSONPConnection.prototype.finished = function (data) { };
     return JSONPConnection;
 }());
-function JSONPConnection_tsickle_Closure_declarations() {
-    /**
-     * The {\@link ReadyState} of this request.
-     * @type {?}
-     */
-    JSONPConnection.prototype.readyState;
-    /**
-     * The outgoing HTTP request.
-     * @type {?}
-     */
-    JSONPConnection.prototype.request;
-    /**
-     * An observable that completes with the response, when the request is finished.
-     * @type {?}
-     */
-    JSONPConnection.prototype.response;
-}
 export var JSONPConnection_ = (function (_super) {
     __extends(JSONPConnection_, _super);
-    /**
-     * @param {?} req
-     * @param {?} _dom
-     * @param {?=} baseResponseOptions
-     */
     function JSONPConnection_(req, _dom, baseResponseOptions) {
         var _this = this;
         _super.call(this);
@@ -81,7 +51,7 @@ export var JSONPConnection_ = (function (_super) {
             var callback = _dom.requestCallback(_this._id);
             var url = req.url;
             if (url.indexOf('=JSONP_CALLBACK&') > -1) {
-                url = url.replace('=JSONP_CALLBACK&', "=" + callback + "&");
+                url = StringWrapper.replace(url, '=JSONP_CALLBACK&', "=" + callback + "&");
             }
             else if (url.lastIndexOf('=JSONP_CALLBACK') === url.length - '=JSONP_CALLBACK'.length) {
                 url = url.substring(0, url.length - '=JSONP_CALLBACK'.length) + ("=" + callback);
@@ -94,14 +64,14 @@ export var JSONPConnection_ = (function (_super) {
                 _dom.cleanup(script);
                 if (!_this._finished) {
                     var responseOptions_1 = new ResponseOptions({ body: JSONP_ERR_NO_CALLBACK, type: ResponseType.Error, url: url });
-                    if (baseResponseOptions) {
+                    if (isPresent(baseResponseOptions)) {
                         responseOptions_1 = baseResponseOptions.merge(responseOptions_1);
                     }
                     responseObserver.error(new Response(responseOptions_1));
                     return;
                 }
                 var responseOptions = new ResponseOptions({ body: _this._responseData, url: url });
-                if (_this.baseResponseOptions) {
+                if (isPresent(_this.baseResponseOptions)) {
                     responseOptions = _this.baseResponseOptions.merge(responseOptions);
                 }
                 responseObserver.next(new Response(responseOptions));
@@ -113,7 +83,7 @@ export var JSONPConnection_ = (function (_super) {
                 _this.readyState = ReadyState.Done;
                 _dom.cleanup(script);
                 var responseOptions = new ResponseOptions({ body: error.message, type: ResponseType.Error });
-                if (baseResponseOptions) {
+                if (isPresent(baseResponseOptions)) {
                     responseOptions = baseResponseOptions.merge(responseOptions);
                 }
                 responseObserver.error(new Response(responseOptions));
@@ -125,14 +95,12 @@ export var JSONPConnection_ = (function (_super) {
                 _this.readyState = ReadyState.Cancelled;
                 script.removeEventListener('load', onLoad);
                 script.removeEventListener('error', onError);
-                _this._dom.cleanup(script);
+                if (isPresent(script)) {
+                    _this._dom.cleanup(script);
+                }
             };
         });
     }
-    /**
-     * @param {?=} data
-     * @return {?}
-     */
     JSONPConnection_.prototype.finished = function (data) {
         // Don't leak connections
         this._finished = true;
@@ -143,25 +111,10 @@ export var JSONPConnection_ = (function (_super) {
     };
     return JSONPConnection_;
 }(JSONPConnection));
-function JSONPConnection__tsickle_Closure_declarations() {
-    /** @type {?} */
-    JSONPConnection_.prototype._id;
-    /** @type {?} */
-    JSONPConnection_.prototype._script;
-    /** @type {?} */
-    JSONPConnection_.prototype._responseData;
-    /** @type {?} */
-    JSONPConnection_.prototype._finished;
-    /** @type {?} */
-    JSONPConnection_.prototype._dom;
-    /** @type {?} */
-    JSONPConnection_.prototype.baseResponseOptions;
-}
 /**
- * A {\@link ConnectionBackend} that uses the JSONP strategy of making requests.
+ * A {@link ConnectionBackend} that uses the JSONP strategy of making requests.
  *
- * \@experimental
- * @abstract
+ * @experimental
  */
 export var JSONPBackend = (function (_super) {
     __extends(JSONPBackend, _super);
@@ -172,19 +125,11 @@ export var JSONPBackend = (function (_super) {
 }(ConnectionBackend));
 export var JSONPBackend_ = (function (_super) {
     __extends(JSONPBackend_, _super);
-    /**
-     * @param {?} _browserJSONP
-     * @param {?} _baseResponseOptions
-     */
     function JSONPBackend_(_browserJSONP, _baseResponseOptions) {
         _super.call(this);
         this._browserJSONP = _browserJSONP;
         this._baseResponseOptions = _baseResponseOptions;
     }
-    /**
-     * @param {?} request
-     * @return {?}
-     */
     JSONPBackend_.prototype.createConnection = function (request) {
         return new JSONPConnection_(request, this._browserJSONP, this._baseResponseOptions);
     };
@@ -192,23 +137,10 @@ export var JSONPBackend_ = (function (_super) {
         { type: Injectable },
     ];
     /** @nocollapse */
-    JSONPBackend_.ctorParameters = function () { return [
+    JSONPBackend_.ctorParameters = [
         { type: BrowserJsonp, },
         { type: ResponseOptions, },
-    ]; };
+    ];
     return JSONPBackend_;
 }(JSONPBackend));
-function JSONPBackend__tsickle_Closure_declarations() {
-    /** @type {?} */
-    JSONPBackend_.decorators;
-    /**
-     * @nocollapse
-     * @type {?}
-     */
-    JSONPBackend_.ctorParameters;
-    /** @type {?} */
-    JSONPBackend_.prototype._browserJSONP;
-    /** @type {?} */
-    JSONPBackend_.prototype._baseResponseOptions;
-}
 //# sourceMappingURL=jsonp_backend.js.map
