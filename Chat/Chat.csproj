@@ -279,7 +279,9 @@
     <Content Include="Content\Sounds\water_droplet_2.mp3" />
     <Content Include="Content\Sounds\water_droplet_3.aac" />
     <Content Include="Content\Sounds\water_droplet_3.mp3" />
-    <Content Include="favicon.ico" />
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
