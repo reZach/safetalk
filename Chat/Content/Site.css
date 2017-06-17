@@ -12,6 +12,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 
 html {height:100%;}
+p, input, textarea, span, li, div {font-family:"JosefinSans Regular";}
 body {min-height:100%;display:flex;flex-direction:column;font-size:16px;}
 .content {flex-direction:column;justify-content:flex-start;margin:70px 40px 0px 40px;}
 .center-content {display:inline-block;}
@@ -21,17 +22,31 @@ body {min-height:100%;display:flex;flex-direction:column;font-size:16px;}
 .header-section {max-height:80px;}
 .input-section {max-height:70px;}
 .chat-room-section {max-height:40px;}
-.input-buttons {max-height:80px;margin-bottom:10px;}
+.input-buttons {max-height:80px;margin-bottom:7px;}
+.navbar, .display-name, h1, h2, h3, h4, h5, h6 {font-family: "JosefinSlab Bold"}
+.navbar-inverse {background-color:#336666;}
+.navbar-inverse .navbar-nav > li > a {font-family: "JosefinSlab Bold";}
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {color:#ffffff;}
 .chat-space {flex: 3 !important;overflow-y:scroll;height:0px;} /* why height:0px? http://stackoverflow.com/questions/14962468/flexbox-and-vertical-scroll-in-a-full-height-app-using-newer-flexbox-api */
 .flex {display:flex;flex:1;}
 .flex-column {flex-direction:column;}
 .flex-end {justify-content:flex-end;}
 .justify-center {justify-content:center;}
 .full-width {width:100%;}
+.alert-warning {background-color:#ccff66;}
 .message-server {color:#b8b8b8;}
-.message-warning {color:#ff0000;}
-.message-cleared {color:#00ff00;}
+.message-warning {color:#ff6633;}
+.message-cleared {color:#ccff66;}
 .chat-invitations {margin-top:30px;}
+
+@font-face {
+    font-family: "JosefinSlab Bold";
+    src: url("../fonts/JosefinSlab-Bold.ttf");
+}
+@font-face {
+    font-family: "JosefinSans Regular";
+    src: url("../fonts/JosefinSans-Regular.ttf")
+}
 
 @media(max-width:767px){
     h1, h2, h3 {margin-top:0px;}

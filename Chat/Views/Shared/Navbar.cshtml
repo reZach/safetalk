@@ -8,13 +8,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            @Html.ActionLink(WebConfigurationManager.AppSettings["ApplicationName"], "Index", "Chat", new { area = "" }, new { @class = "navbar-brand" })
+            <a href="/">
+                <img src="~/Content/Images/fullcolor.png" style="width:53px;" />
+            </a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Chat", "Index", "Chat")</li>
                 <li>@Html.ActionLink("About", "Index", "About")</li>
-                <li>@Html.ActionLink("Disclaimer", "Index", "Disclaimer")</li>
+                <li>@Html.ActionLink("Terms", "Index", "Terms")</li>
                 <li>@Html.ActionLink("Invitation", "Index", "Invitation")</li>
                 <li>@Html.ActionLink("Log", "Index", "Log")</li>
             </ul>

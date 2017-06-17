@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace Chat.Controllers
 {
     [RequireHttps]
-    public class DisclaimerController : Controller
+    public class TermsController : Controller
     {
         public ActionResult Index()
         {

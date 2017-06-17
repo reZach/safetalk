@@ -6,10 +6,11 @@
 <div id="js-knockoutbindingtarget" class="flex">
 
     <div class="center-contentparent alert-modal" data-bind="visible: showWarning, css: {flex: !showWarning()}" style="display:none;">
+        <img src="~/Content/Images/fullcolor.png" style="width:225px;margin:0 auto;display:block;" />
         <div class="row alert alert-danger">
             By entering this chat room, you agree that you are not younger
             than 18 years of age, may be exposed to mature content and have
-            read and agreed to the @Html.ActionLink("terms of use", "Disclaimer", "Home")
+            read and agreed to the @Html.ActionLink("terms of use", "Index", "Terms")
         </div>
         <div class="row center-contentparent">
             <input type="button" id="enter" class="center-content" value="Enter" data-bind="click: enterChatRoom" />
