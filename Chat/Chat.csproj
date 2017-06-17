@@ -229,6 +229,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Images\fullcolor.png" />
+    <Content Include="Content\Images\white.png" />
     <Content Include="Content\Sounds\beer_can_opening.aac" />
     <Content Include="Content\Sounds\beer_can_opening.mp3" />
     <Content Include="Content\Sounds\bell_ring.aac" />
